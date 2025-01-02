@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="StartGameButtonStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/star_button_text</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:elevation">20dp</item>
+    </style>
+</resources>
