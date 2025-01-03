@@ -12,8 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.nenroin.simpleseabattle.R
 import com.nenroin.simpleseabattle.databinding.FragmentGameBinding
+import com.nenroin.simpleseabattle.logic.GameManager
 
-class GameFragment : Fragment() {
+class GameFragment(private val gameManager: GameManager) : Fragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var playerCells: Array<Array<Button>>
     private lateinit var enemyCells: Array<Array<Button>>
@@ -29,6 +30,8 @@ class GameFragment : Fragment() {
 
         createBoard(binding.gridLayoutYourBoard, playerCells, false)
         createBoard(binding.gridLayoutEnemyBoard, enemyCells, true)
+
+        gameManager.startGame(playerCells, enemyCells)
 
         return binding.root
     }
@@ -91,6 +94,6 @@ class GameFragment : Fragment() {
     }
 
     private fun onEnemyCellClick(row: Int, col: Int) {
-        enemyCells[row][col].setBackgroundColor(Color.RED)
+        gameManager.hitEnemy(row, col)
     }
 }

@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nenroin.simpleseabattle.fragment.GameFragment
 import com.nenroin.simpleseabattle.databinding.ActivityClientBinding
 import com.nenroin.simpleseabattle.fragment.ClientFragment
-import java.io.*
-import java.net.Socket
+import com.nenroin.simpleseabattle.logic.GameManager
+import com.nenroin.simpleseabattle.network.ClientManager
 
 class ClientActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClientBinding
-    private val port = 12345
-    private var socket: Socket? = null
+    private lateinit var clientManager: ClientManager
+    private lateinit var gameManager: GameManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,45 +27,36 @@ class ClientActivity : AppCompatActivity() {
     }
 
     fun connectToServer(serverIp: String) {
-        Thread {
-            try {
-                socket = Socket(serverIp, port)
+        clientManager = ClientManager(serverIp, 12345)
+        gameManager = GameManager(clientManager, false)
 
+        clientManager.setListener(object : ClientManager.ClientListener {
+            override fun onConnected() {
                 runOnUiThread {
+                    Toast.makeText(this@ClientActivity, "Подключено к серверу", Toast.LENGTH_SHORT).show()
                     openGameFragment()
                 }
-
-                val input = socket!!.getInputStream()
-                val output = socket!!.getOutputStream()
-                val reader = BufferedReader(InputStreamReader(input))
-                val writer = PrintWriter(output, true)
-
-                // Пример отправки сообщения на сервер
-                writer.println("Клиент подключился!")
-
-                while (true) {
-                    val message = reader.readLine()
-                    if (message != null) {
-                        runOnUiThread {
-                            Toast.makeText(this, "Сервер: $message", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
-        }.start()
+
+            override fun onMessageReceived(message: String) {
+                runOnUiThread {
+                    Toast.makeText(this@ClientActivity, "Сервер: $message", Toast.LENGTH_SHORT).show()
+                    gameManager.getMessage(message)
+                }
+            }
+        })
+
+        clientManager.connectToServer()
     }
 
     private fun openGameFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, GameFragment())
+            .replace(binding.fragmentContainer.id, GameFragment(gameManager))
             .commit()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        socket?.close()
+        clientManager.disconnect()
     }
 }

@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.nenroin.simpleseabattle.activity.ServerActivity
 import com.nenroin.simpleseabattle.databinding.FragmentServerBinding
-
+import com.nenroin.simpleseabattle.network.Util.Companion.getLocalIpAddress
 
 class ServerFragment : Fragment() {
     private lateinit var binding: FragmentServerBinding
@@ -18,7 +17,7 @@ class ServerFragment : Fragment() {
     ): View {
         binding = FragmentServerBinding.inflate(inflater, container, false)
 
-        val ipAddress = (activity as? ServerActivity)?.getLocalIpAddress()
+        val ipAddress = getLocalIpAddress()
         binding.ipTextView.text = ipAddress ?: "Not found"
 
         return binding.root
