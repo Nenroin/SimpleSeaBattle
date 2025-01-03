@@ -1,4 +1,4 @@
-package com.nenroin.simpleseabattle
+package com.nenroin.simpleseabattle.activity
 
 import android.content.Intent
 import android.os.Bundle

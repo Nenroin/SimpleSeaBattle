@@ -16,13 +16,13 @@
         android:theme="@style/Theme.SimpleSeaBattle"
         tools:targetApi="31">
         <activity
-            android:name=".ClientActivity"
+            android:name=".activity.ClientActivity"
             android:exported="false" />
         <activity
-            android:name=".ServerActivity"
+            android:name=".activity.ServerActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

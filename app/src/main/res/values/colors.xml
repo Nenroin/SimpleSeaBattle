@@ -8,4 +8,6 @@
     <color name="background_gradient_color_end">#0094FD</color>
     <color name="semi_transparent_blue">#8056B5F9</color>
     <color name="semi_transparent_white">#80FFFFFF</color>
+    <color name="board_variant_1">#97D3FE</color>
+    <color name="board_variant_2">#A8DBFF</color>
 </resources>
